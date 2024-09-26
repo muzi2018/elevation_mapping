@@ -66,8 +66,13 @@ void elevationMapCallback(const grid_map_msgs::GridMap::ConstPtr& msg)
         double pos_y = position_rotated.y() + msg->info.pose.position.y;
 
         // Output the elevation data
-        ROS_INFO("Cell (%zu, %zu): World Position (%f, %f), Elevation: %f",
-                 row, col, pos_x, pos_y, elevation);
+        if (elevation > 0.1)
+        {
+          ROS_INFO("Cell (%zu, %zu): World Position (%f, %f), Elevation: %f",
+                  row, col, pos_x, pos_y, elevation);
+        }
+        
+
       }
     }
   } else {
