@@ -23,7 +23,7 @@ void elevationMapCallback(const grid_map_msgs::GridMap& msg)
 
     grid_map::Position position;
     map.getPosition(*iterator, position);
-    if (elevation >= 0.1)
+    if (elevation <= -0.07)
     {
       ROS_INFO("Position (%f, %f): Elevation %f", position.x(), position.y(), elevation);
     }
