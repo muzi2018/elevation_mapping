@@ -106,6 +106,15 @@ target_link_libraries(${PROJECT_NAME}
   ${PROJECT_NAME}_library
 )
 
+add_executable(check_terrain_node
+  src/check_terrain_node.cpp
+)
+target_link_libraries(check_terrain_node
+  ${catkin_LIBRARIES}
+)
+
+
+
 #############
 ## Install ##
 #############
