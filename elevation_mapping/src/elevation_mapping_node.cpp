@@ -14,6 +14,9 @@ int main(int argc, char** argv) {
   ros::NodeHandle nodeHandle("~");
   elevation_mapping::ElevationMapping elevationMap(nodeHandle);
 
+
+
+
   // Spin
   ros::AsyncSpinner spinner(nodeHandle.param("num_callback_threads", 1));  // Use n threads
   spinner.start();

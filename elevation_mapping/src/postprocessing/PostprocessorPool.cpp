@@ -51,6 +51,7 @@ bool PostprocessorPool::runTask(const GridMap& gridMap) {
   // Copy data to the buffer for the worker.
   workers_.at(serviceIndex)->setDataBuffer(gridMap);
 
+
   // Create a task with the post-processor and dispatch it.
   auto task = [this, serviceIndex] { wrapTask(serviceIndex); };
   workers_.at(serviceIndex)->ioService().post(task);

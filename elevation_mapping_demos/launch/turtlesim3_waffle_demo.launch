@@ -39,15 +39,15 @@
     <remap from="~input" to="/camera/depth/points"/>
     <remap from="~output" to="/camera/depth/points_downsampled"/>
     <rosparam>
-      filter_field_name: z
+      filter_field_name: z <!-- the filter according to z direction which is the distance from the sensor to object-->
       filter_limit_min: 0.01
       filter_limit_max: 6.0  <!-- Limit the range of points to forward to 6 meters in viewing direction-->
       filter_limit_negative: False
-      leaf_size: 0.05  <!-- Limit the density to 5 cm-->
+      leaf_size: 0.05  <!-- Limit the density to 5 cm; control the size of voxels in VoxelGrid-->
     </rosparam>
   </node>
 
-  <!-- Launch elevation mapping node. -->
+  <!-- Launch elevation mapping node.  src/elevation_mapping_node.cpp-->
   <node pkg="elevation_mapping" type="elevation_mapping" name="elevation_mapping" output="screen">
     <rosparam command="load" file="$(find elevation_mapping_demos)/config/robots/waffle_robot.yaml"/>
     <rosparam command="load" file="$(find elevation_mapping_demos)/config/postprocessing/postprocessor_pipeline.yaml"/>

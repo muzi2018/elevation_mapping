@@ -57,6 +57,7 @@ ElevationMapping::ElevationMapping(ros::NodeHandle& nodeHandle)
 
 void ElevationMapping::setupSubscribers() {  // Handle deprecated point_cloud_topic and input_sources configuration.
   auto [parameters, parameterGuard]{parameters_.getDataToWrite()};
+  // std::cout << "parameters = " << parameters << std::endl;
   const bool configuredInputSources = inputSources_.configureFromRos("input_sources");
   const bool hasDeprecatedPointcloudTopic = nodeHandle_.hasParam("point_cloud_topic");
   if (hasDeprecatedPointcloudTopic) {
@@ -164,11 +165,19 @@ bool ElevationMapping::readParameters(bool reload) {
   auto [parameters, parametersGuard] = parameters_.getDataToWrite();
   auto [mapParameters, mapParametersGuard] = map_.parameters_.getDataToWrite();
   nodeHandle_.param("point_cloud_topic", parameters.pointCloudTopic_, std::string("/points"));
+  std::cout << "-- parameter pointCloudTopic = " << parameters.pointCloudTopic_ << std::endl;
+
   nodeHandle_.param("robot_pose_with_covariance_topic", parameters.robotPoseTopic_, std::string("/pose"));
+  std::cout << "-- parameter robot_pose_with_covariance_topic = " << parameters.robotPoseTopic_ << std::endl;
+
   nodeHandle_.param("track_point_frame_id", parameters.trackPointFrameId_, std::string("/robot"));
+  std::cout << "-- parameter track_point_frame_id = " << parameters.trackPointFrameId_ << std::endl;
   nodeHandle_.param("track_point_x", parameters.trackPoint_.x(), 0.0);
   nodeHandle_.param("track_point_y", parameters.trackPoint_.y(), 0.0);
   nodeHandle_.param("track_point_z", parameters.trackPoint_.z(), 0.0);
+  std::cout << "-- parameter track_point_x = " << parameters.trackPoint_.x() << std::endl;
+  std::cout << "-- parameter track_point_y = " << parameters.trackPoint_.y() << std::endl;
+  std::cout << "-- parameter track_point_z = " << parameters.trackPoint_.z() << std::endl;
 
   nodeHandle_.param("robot_pose_cache_size", parameters.robotPoseCacheSize_, 200);
   ROS_ASSERT(parameters.robotPoseCacheSize_ >= 0);
@@ -213,7 +222,7 @@ bool ElevationMapping::readParameters(bool reload) {
 
   // ElevationMap parameters. TODO Move this to the elevation map class.
   nodeHandle_.param("map_frame_id", parameters.mapFrameId_, std::string("/map"));
-
+  std::cout << "-- parameter map_frame_id = " << parameters.mapFrameId_ << std::endl;
   grid_map::Length length;
   grid_map::Position position;
   double resolution{0.01};
