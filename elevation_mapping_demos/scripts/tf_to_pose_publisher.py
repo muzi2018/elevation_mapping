@@ -38,6 +38,7 @@ def callback(newPose):
                             0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0]
+    
 
     publisher.publish(pose)
 
@@ -64,5 +65,6 @@ def main_program():
 if __name__ == '__main__':
     try:
         main_program()
+        print("Hello, world!")
     except rospy.ROSInterruptException:
         pass
