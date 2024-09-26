@@ -364,6 +364,7 @@ void ElevationMapping::pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr
   Eigen::Matrix<double, 6, 6> robotPoseCovariance;
   robotPoseCovariance.setZero();
   if (!parameters.ignoreRobotMotionUpdates_) {
+    // std::cout << "ignoreRobotMotionUpdates_" << std::endl;
     boost::shared_ptr<geometry_msgs::PoseWithCovarianceStamped const> poseMessage =
         robotPoseCache_.getElemBeforeTime(lastPointCloudUpdateTime_);
     if (!poseMessage) {
@@ -519,6 +520,7 @@ bool ElevationMapping::updatePrediction(const ros::Time& time) {
   boost::shared_ptr<geometry_msgs::PoseWithCovarianceStamped const> poseMessage = robotPoseCache_.getElemBeforeTime(time);
   if (!poseMessage) {
     // Tell the user that either for the timestamp no pose is available or that the buffer is possibly empty
+    // std::cout << "updatePrediction" << std::endl;
     if (robotPoseCache_.getOldestTime().toSec() > lastPointCloudUpdateTime_.toSec()) {
       ROS_ERROR("The oldest pose available is at %f, requested pose at %f", robotPoseCache_.getOldestTime().toSec(),
                 lastPointCloudUpdateTime_.toSec());

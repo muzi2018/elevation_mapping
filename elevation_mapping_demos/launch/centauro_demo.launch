@@ -23,6 +23,14 @@
   <node pkg="tf" type="static_transform_publisher" name="world_to_pelvis_broadcaster" args="0 0 0 0 0 0 world pelvis 100" />
 
 
+
+  <!-- Publish tf 'base_footprint' as pose.-->
+  <node pkg="elevation_mapping_demos" type="tf_to_pose_publisher.py" name="waffle_pose_publisher">
+    <param name="from_frame" type="string" value="world"/>
+    <param name="to_frame" type="string" value="base_footprint"/>
+  </node>
+
+
   <!-- Run a passthrough filter to down-sample the sensor point cloud.-->
   <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="screen"/>
   <node pkg="nodelet" type="nodelet" name="voxel_grid" args="load pcl/VoxelGrid pcl_manager" output="screen">
