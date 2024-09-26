@@ -25,9 +25,9 @@
 
 
   <!-- Publish tf 'base_footprint' as pose.-->
-  <node pkg="elevation_mapping_demos" type="tf_to_pose_publisher.py" name="waffle_pose_publisher">
+  <node pkg="elevation_mapping_demos" type="tf_to_pose_publisher.py" name="waffle_pose_publisher" output="screen">
     <param name="from_frame" type="string" value="world"/>
-    <param name="to_frame" type="string" value="base_footprint"/>
+    <param name="to_frame" type="string" value="pelvis"/>
   </node>
 
 
