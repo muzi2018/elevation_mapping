@@ -10,6 +10,8 @@ void elevationMapCallback(const grid_map_msgs::GridMap& msg)
   grid_map::GridMap map;
   grid_map::GridMapRosConverter::fromMessage(msg, map);
 
+  std::cout << "elevationMapCallback......." << std::endl;
+
   if (!map.exists("elevation")) {
     ROS_WARN("Elevation layer not found in the map.");
     return;
