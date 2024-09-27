@@ -44,4 +44,4 @@ length_in_x_init_submap:                    1.6
 length_in_y_init_submap:                    1.6
 init_submap_height_offset:                  0.01
 init_submap_variance:                       0.001
-target_frame_init_submap:                   base_footprint
+target_frame_init_submap:                   pelvis
