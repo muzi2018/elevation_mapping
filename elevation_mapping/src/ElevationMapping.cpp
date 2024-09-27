@@ -34,9 +34,20 @@ namespace elevation_mapping {
 
 ElevationMapping::ElevationMapping(ros::NodeHandle& nodeHandle)
     : nodeHandle_(nodeHandle),
+      /**
+       * @brief An input source manager reads a list of input sources from the configuration and connects them to the appropriate callback of
+       * elevation mapping.
+       */
       inputSources_(nodeHandle_),
+      /*!
+      * Elevation map stored as grid map handling elevation height, variance, color etc.
+      */
       map_(nodeHandle),
+      /*!
+      * Computes the map variance update from the pose covariance of the robot.
+      */
       robotMotionMapUpdater_(nodeHandle),
+      //! Becomes true when corresponding poses and point clouds can be found
       receivedFirstMatchingPointcloudAndPose_(false) {
 #ifndef NDEBUG
   // Print a warning if built in debug.
@@ -63,6 +74,9 @@ void ElevationMapping::setupSubscribers() {  // Handle deprecated point_cloud_to
   if (hasDeprecatedPointcloudTopic) {
     ROS_WARN("Parameter 'point_cloud_topic' is deprecated, please use 'input_sources' instead.");
   }
+  /**
+   * pointCloudSubscriber_
+   */
   if (!configuredInputSources && hasDeprecatedPointcloudTopic) {
     pointCloudSubscriber_ = nodeHandle_.subscribe<sensor_msgs::PointCloud2>(
         parameters.pointCloudTopic_, 1, [&](const auto& msg) { pointCloudCallback(msg, true, sensorProcessor_); });
@@ -162,6 +176,14 @@ ElevationMapping::~ElevationMapping() {
 bool ElevationMapping::readParameters(bool reload) {
   // Using getDataToWrite gets a write-lock on the parameters thereby blocking all reading threads for the whole scope of this
   // readParameters, which is desired.
+  /**
+   * @param parameters_ : ThreadSafeDataWrapper<Parameters> 
+   * Parameters : 
+   *  @param mapFrameId_ : Frame ID of the elevation mapping
+   *  @param trackPoint_, trackPointFrameId_ : Point in a frame which the elevation map follows
+   *  @param ignoreRobotMotionUpdates_ : If true, robot motion updates are ignored
+   *  @param targetFrameInitSubmap_ : Target frame to get the init height of the elevation map
+   */
   auto [parameters, parametersGuard] = parameters_.getDataToWrite();
   auto [mapParameters, mapParametersGuard] = map_.parameters_.getDataToWrite();
   nodeHandle_.param("point_cloud_topic", parameters.pointCloudTopic_, std::string("/points"));

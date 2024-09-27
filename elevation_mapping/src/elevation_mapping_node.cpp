@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
 
   // Spin
-  ros::AsyncSpinner spinner(nodeHandle.param("num_callback_threads", 1));  // Use n threads
+  ros::AsyncSpinner spinner(nodeHandle.param("num_callback_threads", 4));  // Use n threads
   spinner.start();
   ros::waitForShutdown();
   return 0;

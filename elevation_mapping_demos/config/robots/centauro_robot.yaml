@@ -16,7 +16,7 @@ track_point_x:                              0.0
 track_point_y:                              0.0
 track_point_z:                              0.0
 min_update_rate:                            2.0
-time_tolerance:                             1.0
+time_tolerance:                             0.2
 time_offset_for_point_cloud:                0.0
 sensor_processor/ignore_points_above:       0.4
 robot_motion_map_update/covariance_scale:   0.01

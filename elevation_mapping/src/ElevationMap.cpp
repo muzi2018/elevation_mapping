@@ -35,21 +35,49 @@ namespace elevation_mapping {
 
 ElevationMap::ElevationMap(ros::NodeHandle nodeHandle)
     : nodeHandle_(nodeHandle),
+    /**
+     *  initializes the rawMap_ object with a list of layer names.
+     * @param elevation : store the elevation data
+     * @param lowest_scan_point :  Keeps track of the lowest point detected by the sensor in each cell, which can be useful for identifying depressions or obstacles.
+     * @param "sensor_x_at_lowest_scan", "sensor_y_at_lowest_scan", "sensor_z_at_lowest_scan" : Store the sensor's position (coordinates) at the time when the lowest scan point was recorded.
+     */
       rawMap_({"elevation", "variance", "horizontal_variance_x", "horizontal_variance_y", "horizontal_variance_xy", "color", "time",
                "dynamic_time", "lowest_scan_point", "sensor_x_at_lowest_scan", "sensor_y_at_lowest_scan", "sensor_z_at_lowest_scan"}),
+    /**
+     * @param upper_bound : Contains the upper bound of the elevation estimates.
+     * @param lower_bound : Contains the lower bound of the elevation estimates.
+     */
       fusedMap_({"elevation", "upper_bound", "lower_bound", "color"}),
       postprocessorPool_(nodeHandle.param("postprocessor_num_threads", 1), nodeHandle_),
+    /**
+     * An underlying map could be a pre-existing elevation map loaded from a file, database, or previous mapping session.
+     */
       hasUnderlyingMap_(false) {
   rawMap_.setBasicLayers({"elevation", "variance"});
   fusedMap_.setBasicLayers({"elevation", "upper_bound", "lower_bound"});
   clear();
+    /**
+     *@param multiHeightNoise_ : In environments where multiple elevation measurements exist for the same location (e.g., vegetation or overhangs), this parameter adds additional noise to account for the increased uncertainty. It helps in handling cases where the terrain has multiple layers.
+     *@param enableVisibilityCleanup_ : When enabled, the system performs cleanup of data that is no longer visible to the sensors. This helps remove outdated or occluded information from the map, keeping it up-to-date.
+     *@param enableContinuousCleanup_ : If set to true, the map will be periodically cleaned to remove stale data, even if it hasn't been explicitly marked for cleanup. This is useful in dynamic environments where the terrain changes over time.
+     *@param visibilityCleanupDuration_ : Cells older than this duration without being updated may be removed if they are not visible to the sensors anymore. A value of 0.0 could indicate immediate cleanup or that the duration is set elsewhere.
+     */
   const Parameters parameters{parameters_.getData()};
 
+  /**
+   * elevationMapFusedPublisher_
+   */
   elevationMapFusedPublisher_ = nodeHandle_.advertise<grid_map_msgs::GridMap>("elevation_map", 1);
   if (!parameters.underlyingMapTopic_.empty()) {
+    /**
+     * underlyingMapSubscriber_
+     */
     underlyingMapSubscriber_ = nodeHandle_.subscribe(parameters.underlyingMapTopic_, 1, &ElevationMap::underlyingMapCallback, this);
   }
   // TODO(max): if (enableVisibilityCleanup_) when parameter cleanup is ready.
+  /**
+   * visibilityCleanupMapPublisher_
+   */
   visibilityCleanupMapPublisher_ = nodeHandle_.advertise<grid_map_msgs::GridMap>("visibility_cleanup_map", 1);
 
   initialTime_ = ros::Time::now();

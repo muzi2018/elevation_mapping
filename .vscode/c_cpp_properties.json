@@ -6,7 +6,8 @@
         "limitSymbolsToIncludedHeaders": false
       },
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        // "/opt/ros/noetic/**"
       ],
       "name": "linux-gcc-x64",
       "intelliSenseMode": "linux-gcc-x64",
