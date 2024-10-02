@@ -1,0 +1,8 @@
+# Ignore everything in the .vscode directory
+.vscode/*
+
+# Uncomment the lines below if you want to include specific files
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+
