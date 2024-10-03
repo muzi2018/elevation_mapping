@@ -25,10 +25,11 @@ void elevationMapCallback(const grid_map_msgs::GridMap& msg)
     map.getPosition(*iterator, position);
 
     double elevation_prin = elevation;
-    elevation_prin = elevation_prin + 1 ;    
-    if (elevation_prin > 0.04 )
+    elevation_prin = elevation_prin + 0.8 ;    
+    if ( elevation_prin > 0.08 && elevation_prin < 0.1)
     {
-      ROS_INFO("Position (%f, %f): Elevation %f", position.x(), position.y(), elevation_prin);
+      std::cout << "|--- x=" << position.x() << " y=" << position.y() << " z=" << elevation_prin << " --|" << std::endl; 
+      // ROS_INFO("Position (%f, %f): Elevation %f", position.x(), position.y(), elevation);
     }
     
   }
