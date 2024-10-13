@@ -1,5 +1,5 @@
 # Robot.
-map_frame_id:                               world
+map_frame_id:                               pelvis
 robot_base_frame_id:                        pelvis
 robot_pose_with_covariance_topic:           /pelvis_pose
 robot_pose_cache_size:                      200
@@ -23,7 +23,7 @@ robot_motion_map_update/covariance_scale:   0.01
 
 # Map.
 length_in_x:                                3.0
-length_in_y:                                3.0
+length_in_y:                                1.0
 position_x:                                 0.0
 position_y:                                 0.0
 resolution:                                 0.1
